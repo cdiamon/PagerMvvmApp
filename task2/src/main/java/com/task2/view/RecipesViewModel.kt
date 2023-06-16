@@ -14,11 +14,11 @@ import javax.inject.Inject
 @HiltViewModel
 class RecipesViewModel @Inject constructor(private val repository: DataRepository) : ViewModel() {
 
-    private val _recipesData: MutableLiveData<Result<Recipes>> = MutableLiveData()
-    val recipesData: LiveData<Result<Recipes>> = _recipesData
+    private val _recipesData: MutableLiveData<Recipes> = MutableLiveData()
+    val recipesData: LiveData<Recipes> = _recipesData
 
     fun loadRecipes() = viewModelScope.launch {
-        _recipesData.value = Result.success(Recipes.Loading)
+        _recipesData.value = Recipes.Loading
         delay(1000) // to show loading
         repository.loadRecipes().collect {
             _recipesData.value = it

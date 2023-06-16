@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @ActivityRetainedScoped
 interface DataRepository {
-    fun loadRecipes(): Flow<Result<Recipes>>
+    fun loadRecipes(): Flow<Recipes>
 }
 
 class DataRepositoryImpl @Inject constructor(
@@ -18,9 +18,15 @@ class DataRepositoryImpl @Inject constructor(
     private val recipesMapper: RecipesMapper,
 ) : DataRepository {
 
-    override fun loadRecipes(): Flow<Result<Recipes>> =
+    override fun loadRecipes(): Flow<Recipes> =
         flow {
             val response = dataSource.fetchRecipes()
-            emit(recipesMapper.map(response))
+            response
+                .onFailure {
+                    emit(Recipes.Error(it.message ?: "generic error"))
+                }
+                .onSuccess {
+                    emit(recipesMapper.map(it))
+                }
         }
 }

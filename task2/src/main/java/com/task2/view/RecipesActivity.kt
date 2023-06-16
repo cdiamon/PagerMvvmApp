@@ -28,14 +28,10 @@ class RecipesActivity : AppCompatActivity() {
     private fun fetchData() {
         viewModel.loadRecipes()
         viewModel.recipesData.observe(this) { result ->
-            result.onFailure {
-                showErrorMessage(it.message ?: "Error")
-            }.onSuccess {
-                when (it) {
-                    is Recipes.Loading -> showLoader()
-                    is Recipes.Data -> showData(it.itemsList)
-                    is Recipes.Error -> showErrorMessage(it.message)
-                }
+            when (result) {
+                is Recipes.Loading -> showLoader()
+                is Recipes.Data -> showData(result.itemsList)
+                is Recipes.Error -> showErrorMessage(result.message)
             }
         }
     }

@@ -8,23 +8,21 @@ import java.util.Locale
 import javax.inject.Inject
 
 class RecipesMapper @Inject constructor() {
-    fun map(response: Result<List<RecipesResponse>>): Result<Recipes> {
-        return response.mapCatching { recipesList ->
-            val itemsList = mutableListOf<Recipes.Data.Item>()
-            itemsList.add(Recipes.Data.Item.DateItem(getCurrentDate()))
-            recipesList.forEach { from ->
-                itemsList.add(
-                    Recipes.Data.Item.RecipeItem(
-                        image = from.image,
-                        name = from.name,
-                        headline = from.headline,
-                    )
+    fun map(response: List<RecipesResponse>): Recipes {
+        val itemsList = mutableListOf<Recipes.Data.Item>()
+        itemsList.add(Recipes.Data.Item.DateItem(getCurrentDate()))
+        response.forEach { from ->
+            itemsList.add(
+                Recipes.Data.Item.RecipeItem(
+                    image = from.image,
+                    name = from.name,
+                    headline = from.headline,
                 )
-            }
-            Recipes.Data(
-                itemsList = itemsList
             )
         }
+        return Recipes.Data(
+            itemsList = itemsList
+        )
     }
 
     private fun getCurrentDate(): String {
