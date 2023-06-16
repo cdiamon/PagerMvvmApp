@@ -1,0 +1,16 @@
+Recipes List View Application
+
+This is a single-page application that showcases a list of recipes. It follows Clean Architecture,
+uses MVVM pattern, coroutines Flow, Hilt, and viewBinding.
+
+Justifications:
+Clean Architecture: Separation of concerns, maintainability, testability.
+MVVM Pattern: Clear separation of UI and business logic, reusability, testability.
+Coroutines Flow: Asynchronous operations, reactive UI updates.
+ViewBinding: Improved view binding, code readability.
+Hilt: Simplified dependency injection.
+
+Testing Strategies:
+Unit Testing: Test ViewModel, Repository, and DataSource in isolation.
+Integration Testing: Verify interaction between different layers.
+UI Testing: Test UI behavior, interactions, and edge cases.
