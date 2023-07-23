@@ -1,5 +1,7 @@
 package com.task2.domain.models
 
+import java.io.Serializable
+
 sealed interface Recipes {
 
     data class Data(
@@ -10,7 +12,7 @@ sealed interface Recipes {
                 val image: String,
                 val name: String,
                 val headline: String,
-            ) : Item
+            ) : Item, Serializable
 
             data class DateItem(
                 val date: String,

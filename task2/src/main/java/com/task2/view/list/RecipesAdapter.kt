@@ -1,4 +1,4 @@
-package com.task2.view
+package com.task2.view.list
 
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,8 @@ import com.task2.databinding.ItemDateBinding
 import com.task2.databinding.ItemRecipeBinding
 import com.task2.domain.models.Recipes.Data.Item
 
-class RecipesAdapter : ListAdapter<Item, RecipesAdapter.ViewHolder>(diffUtilCallback) {
+class RecipesAdapter(private val listener: (Item.RecipeItem) -> Unit) :
+    ListAdapter<Item, RecipesAdapter.ViewHolder>(diffUtilCallback) {
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
@@ -27,11 +28,14 @@ class RecipesAdapter : ListAdapter<Item, RecipesAdapter.ViewHolder>(diffUtilCall
                     LayoutInflater.from(parent.context), parent, false
                 )
             )
+
             VIEW_TYPE_RECIPE -> ViewHolder.RecipeViewHolder(
                 ItemRecipeBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
-                )
+                ),
+                listener
             )
+
             else -> throw IllegalStateException("Unknown view type [$viewType]")
         }
 
@@ -39,9 +43,8 @@ class RecipesAdapter : ListAdapter<Item, RecipesAdapter.ViewHolder>(diffUtilCall
         val item = getItem(position)
         when (getItemViewType(position)) {
             VIEW_TYPE_DATE -> bindDate(holder as ViewHolder.HeaderViewHolder, item as Item.DateItem)
-            VIEW_TYPE_RECIPE -> bindRecipe(
-                holder as ViewHolder.RecipeViewHolder,
-                item as Item.RecipeItem
+            VIEW_TYPE_RECIPE -> (holder as ViewHolder.RecipeViewHolder).bindRecipe(
+                holder, item as Item.RecipeItem
             )
         }
     }
@@ -71,8 +74,34 @@ class RecipesAdapter : ListAdapter<Item, RecipesAdapter.ViewHolder>(diffUtilCall
     }
 
     sealed class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        class RecipeViewHolder(val binding: ItemRecipeBinding) :
-            ViewHolder(binding.root)
+        class RecipeViewHolder(
+            val binding: ItemRecipeBinding,
+            listener: (Item.RecipeItem) -> Unit
+        ) :
+            ViewHolder(binding.root) {
+
+            private var recipeItem: Item.RecipeItem? = null
+
+            init {
+                binding.root.setOnClickListener { recipeItem?.let { listener.invoke(it) } }
+            }
+
+            fun bindRecipe(
+                recipeViewHolder: RecipeViewHolder,
+                recipeItem: Item.RecipeItem
+            ) {
+                this.recipeItem = recipeItem
+                with(recipeViewHolder.binding) {
+                    recipeTitle.text = recipeItem.name
+                    recipeDescription.text = recipeItem.headline
+                    Glide
+                        .with(root.context)
+                        .load(recipeItem.image)
+                        .centerCrop()
+                        .into(recipeImage)
+                }
+            }
+        }
 
         class HeaderViewHolder(val binding: ItemDateBinding) :
             ViewHolder(binding.root)

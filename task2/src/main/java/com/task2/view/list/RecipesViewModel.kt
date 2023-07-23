@@ -1,4 +1,4 @@
-package com.task2.view
+package com.task2.view.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +17,11 @@ class RecipesViewModel @Inject constructor(private val repository: DataRepositor
     private val _recipesData: MutableLiveData<Recipes> = MutableLiveData()
     val recipesData: LiveData<Recipes> = _recipesData
 
-    fun loadRecipes() = viewModelScope.launch {
+    init {
+        loadRecipes()
+    }
+
+    private fun loadRecipes() = viewModelScope.launch {
         _recipesData.value = Recipes.Loading
         delay(1000) // to show loading
         repository.loadRecipes().collect {

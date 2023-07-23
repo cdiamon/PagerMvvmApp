@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/recipesFragment">
+
+    <fragment
+        android:id="@+id/recipesFragment"
+        android:name="com.task2.view.list.RecipesFragment"
+        android:label="RecipesFragment">
+        <action
+            android:id="@+id/action_recipesFragment_to_recipeDetailsFragment2"
+            app:destination="@id/recipeDetailsFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/recipeDetailsFragment"
+        android:name="com.task2.view.details.RecipeDetailsFragment"
+        tools:layout="@layout/dialog_recipe_details"
+        android:label="RecipeDetailsFragment">
+        <action
+            android:id="@+id/action_recipesFragment_to_recipeDetailsFragment"
+            app:destination="@id/recipeDetailsFragment" />
+        <argument
+            android:name="com.task2.domain.models.Recipes.Data.Item.RecipeItem"
+            android:defaultValue="@null"
+            app:argType="com.task2.domain.models.Recipes$Data$Item$RecipeItem"
+            app:nullable="true" />
+    </dialog>
+</navigation>
