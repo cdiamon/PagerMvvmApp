@@ -56,8 +56,8 @@ The idea of the second exercise is to create a simple single-page application sh
 
 ### Requirements
 
-- Build a single view application that shows a list of recipes. 
-- Implement data loading, basic UI, error handling. 
+- Build a two screens view application that shows a list of recipes and the details screen on click. 
+- Implement data loading, basic UI, navigation, error handling. 
 - Keep in mind code readability, scalability, and maintainability when making implementation decisions. 
 - Provide README with justifications and testing strategies. 
 
@@ -66,13 +66,11 @@ The list of recipes should be loaded via HTTP request using this link - [recipes
 **There is no need to build:**
 
 - Stylish UI, basic and readable is enough,
-- Navigation,
-- Caching,
-- Write UI or unit tests.
+- Caching.
 
 **User Interface**
 
-- The app should show a single view.
+- The app should show two views.
 - At launch, the app should show a loading spinner while it gets the data from the source. 
 - When the data is fetched, the app should hide the loading spinner and show the recipes’ view.
 - Show the current date in “dd  MMM” format (20 Aug) with text size 18sp as a first element of the recipes list view.
