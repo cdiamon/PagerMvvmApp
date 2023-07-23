@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.task2.R
 import com.task2.view.MainActivity
+import com.task2.view.utils.waitForView
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.core.IsInstanceOf
 import org.junit.Rule
@@ -15,22 +16,21 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class MainActivityTest {
+class MainFlowTest {
 
     @Rule
     @JvmField
     var mActivityScenarioRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun recipesActivityTest() {
-        val textView = onView(
-            allOf(
-                withId(R.id.dateTextView), withText("23 Jul"),
-                withParent(withParent(withId(R.id.recipes_recycler_view))),
-                isDisplayed()
+    fun showListAndDateListNoMocks() {
+        onView(isRoot()).perform(waitForView(R.id.dateTextView)).check(
+            matches(
+                allOf(
+                    isDisplayed()
+                )
             )
         )
-        textView.check(matches(withText("23 Jul")))
 
         val textView2 = onView(
             allOf(
